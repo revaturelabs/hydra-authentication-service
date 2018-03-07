@@ -1,4 +1,4 @@
-package com.revature.security.impl;
+package com.revature.hydra.security.impl;
 
 import java.io.IOException;
 import java.net.URI;
@@ -42,12 +42,12 @@ import com.fasterxml.jackson.core.JsonParser.Feature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonObject;
-import com.revature.security.beans.Trainer;
-import com.revature.security.beans.TrainerRole;
-import com.revature.security.exceptions.NotAuthorizedException;
-import com.revature.security.models.SalesforceToken;
-import com.revature.security.models.SalesforceUser;
-import com.revature.security.Authorization;
+import com.revature.hydra.security.Authorization;
+import com.revature.hydra.security.beans.Trainer;
+import com.revature.hydra.security.beans.TrainerRole;
+import com.revature.hydra.security.exceptions.NotAuthorizedException;
+import com.revature.hydra.security.models.SalesforceToken;
+import com.revature.hydra.security.models.SalesforceUser;
 
 /**
  * Created by louislopez on 1/18/17.
@@ -60,11 +60,11 @@ public class AuthorizationImpl extends AbstractSalesforceSecurityHelper implemen
   private String preRedirect;
 	private static final Logger log = Logger.getLogger(AuthorizationImpl.class);
 	@Value("#{systemEnvironment['CALIBER_DEV_MODE']}")
-	private boolean debug;
+	private Boolean debug;
 	private static final String DEBUG_USER_LOGIN = "patrick.walsh@revature.com";
 	private static final String REDIRECT = "redirect:";
 	private static final String REVATURE = "http://www.revature.com/";
-	
+
 	@Autowired
 	private AmqpTemplate msgq;
 
@@ -72,11 +72,11 @@ public class AuthorizationImpl extends AbstractSalesforceSecurityHelper implemen
 		super();
 	}
 
-  @RequestMapping("/getRole") 
+  @RequestMapping("/getRole")
   public ModelAndView authorized(HttpServletRequest request, HttpServletResponse response) {
     Cookie[] cookies = request.getCookies();
     Cookie cookieToProcess = null;
-    if(cookies != null) { 
+    if(cookies != null) {
     for(Cookie cookie : cookies) {
       if("role".equals(cookie.getName())) {
         cookieToProcess = cookie;
@@ -98,7 +98,7 @@ public class AuthorizationImpl extends AbstractSalesforceSecurityHelper implemen
   }
 	/**
 	 * Redirects the request to perform authentication.
-	 * 
+	 *
 	 */
 	@RequestMapping("/")
 	public ModelAndView openAuthURI() {
@@ -113,7 +113,7 @@ public class AuthorizationImpl extends AbstractSalesforceSecurityHelper implemen
 
 	/**
 	 * Retrieves Salesforce authentication token from Salesforce REST API
-	 * 
+	 *
 	 * @param code
 	 * @throws URISyntaxException
 	 */
@@ -138,7 +138,7 @@ public class AuthorizationImpl extends AbstractSalesforceSecurityHelper implemen
 		// Getting token response from salesforce
 		HttpResponse response = httpClient.execute(post);
 		String salesTokenString = toJsonString(response.getEntity().getContent());
-		
+
 		try {
 			tryAuthorize(servletRequest, servletResponse, salesTokenString);
 		} catch (AuthenticationCredentialsNotFoundException e) {
@@ -158,7 +158,7 @@ public class AuthorizationImpl extends AbstractSalesforceSecurityHelper implemen
 			throws IOException, URISyntaxException {
 		log.info("API log in test");
 		String salesTokenString = servletRequest.getParameter("salestoken");
-		
+
 		try {
 			tryAuthorize(servletRequest, servletResponse, salesTokenString);
 		} catch (AuthenticationCredentialsNotFoundException e) {
@@ -168,9 +168,9 @@ public class AuthorizationImpl extends AbstractSalesforceSecurityHelper implemen
 
 	/**
 	 * Clears session information and logout the user.
-	 * 
+	 *
 	 * Note: Still retrieving 302 on access-token and null refresh-token
-	 * 
+	 *
 	 * @param auth
 	 * @param session
 	 * @return
@@ -233,7 +233,7 @@ public class AuthorizationImpl extends AbstractSalesforceSecurityHelper implemen
 	 * email is authorized to user Caliber. All authorized Caliber users must
 	 * exist as a TRAINER record with email matching that of Salesforce user
 	 * email.
-	 * 
+	 *
 	 * @param servletRequest
 	 * @param email
 	 * @return
@@ -242,8 +242,8 @@ public class AuthorizationImpl extends AbstractSalesforceSecurityHelper implemen
 	 */
 	private Trainer getCaliberTrainer(HttpServletRequest servletRequest, String email)
 			throws URISyntaxException, IOException {
-		
-		
+
+
 		/*HttpClient httpClient = HttpClientBuilder.create().build();
 		URIBuilder uriBuilder = new URIBuilder();
 		uriBuilder.setScheme(servletRequest.getScheme()).setHost(servletRequest.getServerName())
@@ -257,18 +257,18 @@ public class AuthorizationImpl extends AbstractSalesforceSecurityHelper implemen
 		jObj.addProperty("methodName", "findByEmail");
 		jObj.addProperty("email", email);
 		Trainer trainer = (Trainer)msgq.convertSendAndReceive("revature.caliber.service","trainer", jObj.toString());
-		
+
 		if (trainer == null) {
 			log.fatal("Training API returned: " + trainer.toString());
 			throw new NotAuthorizedException();
 		}
-		
+
 		return trainer;
 	}
-	
+
 	private void tryAuthorize(HttpServletRequest servletRequest, HttpServletResponse servletResponse, String salesTokenString) throws URISyntaxException, IOException {
 		SalesforceUser salesforceUser;
-		
+
 		if (debug) {
 			// fake Salesforce User
 			salesforceUser = new SalesforceUser();
@@ -280,7 +280,7 @@ public class AuthorizationImpl extends AbstractSalesforceSecurityHelper implemen
 			// user
 			salesforceUser = getSalesforceUserDetails(servletRequest, salesforceToken);
 		}
-		
+
 		String email = salesforceUser.getEmail();
 		// Http request to the training module to get the caliber user
 		Trainer trainer = getCaliberTrainer(servletRequest, email);
@@ -292,7 +292,7 @@ public class AuthorizationImpl extends AbstractSalesforceSecurityHelper implemen
 	 * Parses a Json String containing TRAINER bean. Authorize the user with
 	 * Caliber and store their PreAuthenticatedAuthenticationToken in session.
 	 * Adds convenience 'role' cookie for AngularJS consumption.
-	 * 
+	 *
 	 * @param jsonString
 	 * @param salesforceUser
 	 * @param servletResponse
@@ -319,12 +319,12 @@ public class AuthorizationImpl extends AbstractSalesforceSecurityHelper implemen
 		servletResponse.addCookie(new Cookie("role", trainer.getTier().toString()));
 		servletResponse.addCookie(new Cookie("caliber_email", trainer.getEmail()));
 		}catch(Exception e) { e.getMessage();}
-		
+
 	}
 
 	/**
 	 * Retrieve the salesforce access_token from the forwarded request
-	 * 
+	 *
 	 * @param token
 	 * @return
 	 * @throws IOException
@@ -350,7 +350,7 @@ public class AuthorizationImpl extends AbstractSalesforceSecurityHelper implemen
 	/**
 	 * Makes a request to Salesforce REST API to retrieve the authenticated
 	 * user's details
-	 * 
+	 *
 	 * @param servletRequest
 	 * @param salesforceToken
 	 * @return

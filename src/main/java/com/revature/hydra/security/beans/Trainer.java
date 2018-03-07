@@ -1,4 +1,4 @@
-package com.revature.security.beans;
+package com.revature.hydra.security.beans;
 
 import java.io.Serializable;
 import java.util.Set;

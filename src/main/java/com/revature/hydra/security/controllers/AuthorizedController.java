@@ -1,4 +1,4 @@
-package com.revature.security.controllers;
+package com.revature.hydra.security.controllers;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.revature.security.models.SalesforceUser;
+import com.revature.hydra.security.models.SalesforceUser;
 
 @Controller
 //@CrossOrigin

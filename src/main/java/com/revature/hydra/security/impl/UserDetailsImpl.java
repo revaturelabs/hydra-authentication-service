@@ -1,4 +1,4 @@
-package com.revature.security.impl;
+package com.revature.hydra.security.impl;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import com.revature.security.UserDetails;
+import com.revature.hydra.security.UserDetails;
 
 import java.io.IOException;
 
