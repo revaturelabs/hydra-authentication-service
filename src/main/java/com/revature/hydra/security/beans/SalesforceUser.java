@@ -1,4 +1,4 @@
-package com.revature.hydra.security.models;
+package com.revature.hydra.security.beans;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.revature.hydra.security.beans.Trainer;
 
 /**
  * The type Salesforce user.

@@ -29,9 +29,4 @@ public class RoleChecker {
 		
 		return false;
 	}
-	
-	public boolean testing(String userrole) {
-		System.out.println(userrole);
-		return true;
-	}
 }

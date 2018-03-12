@@ -56,7 +56,9 @@ public abstract class AbstractSalesforceSecurityHelper {
         	log.error("Unable to read input String: " + e + " " + e.getClass() + " " + e.getMessage());	
             return null;
         }
-        closeStream();
+        finally {
+			closeStream();
+        }
         return stringBuilder.toString();
     }
 
@@ -68,7 +70,8 @@ public abstract class AbstractSalesforceSecurityHelper {
         }
     }
 
-	public String getLoginURL() {
+	// EnvVariable
+    public String getLoginURL() {
 		return loginURL;
 	}
 
@@ -76,6 +79,7 @@ public abstract class AbstractSalesforceSecurityHelper {
 		this.loginURL = loginURL;
 	}
 
+	// This is service/oauth2/authorize
 	public String getAuthURL() {
 		return authURL;
 	}
@@ -84,6 +88,7 @@ public abstract class AbstractSalesforceSecurityHelper {
 		this.authURL = authURL;
 	}
 
+	// This is service/oauth2/token
 	public String getAccessTokenURL() {
 		return accessTokenURL;
 	}
@@ -92,6 +97,7 @@ public abstract class AbstractSalesforceSecurityHelper {
 		this.accessTokenURL = accessTokenURL;
 	}
 
+	// EnvVariable
 	public String getClientId() {
 		return clientId;
 	}
@@ -100,6 +106,7 @@ public abstract class AbstractSalesforceSecurityHelper {
 		this.clientId = clientId;
 	}
 
+	// EnvVariable
 	public String getClientSecret() {
 		return clientSecret;
 	}
@@ -108,6 +115,7 @@ public abstract class AbstractSalesforceSecurityHelper {
 		this.clientSecret = clientSecret;
 	}
 
+	// EnvVariable
 	public String getRedirectUri() {
 		return redirectUri;
 	}
@@ -116,6 +124,7 @@ public abstract class AbstractSalesforceSecurityHelper {
 		this.redirectUri = redirectUri;
 	}
 
+	// EnvVariable
 	public String getRedirectUrl() {
 		return redirectUrl;
 	}
@@ -123,7 +132,8 @@ public abstract class AbstractSalesforceSecurityHelper {
 	public void setRedirectUrl(String redirectUrl) {
 		this.redirectUrl = redirectUrl;
 	}
-
+	
+	// services/oauth2/revoke
 	public String getRevokeUrl() {
 		return revokeUrl;
 	}
@@ -155,6 +165,5 @@ public abstract class AbstractSalesforceSecurityHelper {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-    
     
 }

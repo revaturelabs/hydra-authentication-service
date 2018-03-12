@@ -4,3 +4,6 @@ spring:
   cloud:
     config:
       url: http://localhost:8888
+security:
+  basic:
+    enabled: false
