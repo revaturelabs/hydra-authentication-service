@@ -17,8 +17,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public abstract class AbstractSalesforceSecurityHelper {
-	@Value("#{systemEnvironment['SALESFORCE_LOGIN_URL']}")
-	protected String loginURL;
+	// @Value("#{systemEnvironment['SALESFORCE_LOGIN_URL']}")
+	protected String loginURL = "http://35.183.9.62:8908/";
 	@Value("services/oauth2/authorize")
 	protected String authURL;
 	@Value("services/oauth2/token")
