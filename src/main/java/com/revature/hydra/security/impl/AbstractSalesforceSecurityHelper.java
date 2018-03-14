@@ -18,27 +18,38 @@ import org.springframework.stereotype.Component;
 @Component
 public abstract class AbstractSalesforceSecurityHelper {
 	// @Value("#{systemEnvironment['SALESFORCE_LOGIN_URL']}")
-	protected String loginURL = "http://35.183.9.62:8908/";
+	// This needs to be the url of salesforce service
+	protected String loginURL = "";
+	// Using @Value annotation for this is very useless
 	@Value("services/oauth2/authorize")
 	protected String authURL;
+	// Using @Value annotation for this is very useless
 	@Value("services/oauth2/token")
 	protected String accessTokenURL;
-	@Value("#{systemEnvironment['SALESFORCE_CLIENT_ID']}")
-	protected String clientId;
-	@Value("#{systemEnvironment['SALESFORCE_CLIENT_SECRET']}")
+	// @Value("#{systemEnvironment['SALESFORCE_CLIENT_ID']}")
+	// this needs to be the clientId of machine requesting
+	protected String clientId = "";
+	// @Value("#{systemEnvironment['SALESFORCE_CLIENT_SECRET']}")
+	// This needs to be the client password. Should not be implemented this way imo.
 	protected String clientSecret;
-	@Value("#{systemEnvironment['SALESFORCE_REDIRECT_URI']}")
-	protected String redirectUri;
-	@Value("#{systemEnvironment['CALIBER_PROJECT_URL']}")
-	protected String redirectUrl;
+	// This needs to be the url to redirect from salesforce
+	// @Value("#{systemEnvironment['SALESFORCE_REDIRECT_URI']}")
+	protected String redirectUri = "";
+	// @Value("#{systemEnvironment['CALIBER_PROJECT_URL']}")
+	// This needs to be caliber url.
+	protected String redirectUrl = "";
+	// Using @Value annotation for this is very useless
 	@Value("services/oauth2/revoke")
 	protected String revokeUrl;
-	@Value("#{systemEnvironment['CALIBER_SERVER_URL']}")
-	protected String baseUrl;
-	@Value("#{systemEnvironment['CALIBER_API_USERNAME']}")
-	protected String username;
-	@Value("#{systemEnvironment['CALIBER_API_PASSWORD']}")
-	protected String password;
+	// @Value("#{systemEnvironment['CALIBER_SERVER_URL']}")
+	// This should Caliber direct endpoint to get the token.
+	protected String baseUrl = "";
+	// @Value("#{systemEnvironment['CALIBER_API_USERNAME']}")
+	// This should be in a config file in a gitlab repo or pcf uaa.
+	protected String username = "";
+	// @Value("#{systemEnvironment['CALIBER_API_PASSWORD']}")
+	// This should be in a config file in a gitlab repo or pcf uaa.
+	protected String password = "";
 	
     private BufferedReader bufferedReader;
     private StringBuilder stringBuilder;

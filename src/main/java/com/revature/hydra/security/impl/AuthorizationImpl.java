@@ -54,6 +54,7 @@ import com.revature.hydra.security.exceptions.NotAuthorizedException;
 @Controller
 @CrossOrigin
 public class AuthorizationImpl extends AbstractSalesforceSecurityHelper implements Authorization {
+	// Using @Value like this is very useless.
 	@Value("/caliber/")
 	private String forwardUrl;
 	private String preRedirect;
