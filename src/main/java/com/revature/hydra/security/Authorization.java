@@ -1,4 +1,4 @@
-package com.revature.security;
+package com.revature.hydra.security;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -20,7 +20,7 @@ public interface Authorization {
      * 
      * @return view of the generated URI
      */
-    public ModelAndView openAuthURI();
+    public String openAuthURI();
 
     /**
      * Creates salesforce token and saves it as a session cookie

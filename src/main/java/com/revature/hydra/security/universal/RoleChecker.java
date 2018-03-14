@@ -1,4 +1,4 @@
-package com.revature.security.universal;
+package com.revature.hydra.security.universal;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -28,10 +28,5 @@ public class RoleChecker {
 		}
 		
 		return false;
-	}
-	
-	public boolean testing(String userrole) {
-		System.out.println(userrole);
-		return true;
 	}
 }

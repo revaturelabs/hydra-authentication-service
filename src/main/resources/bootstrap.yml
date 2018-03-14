@@ -4,3 +4,8 @@ spring:
   cloud:
     config:
       url: http://localhost:8888
+server:
+  port: 8910
+security:
+  basic:
+    enabled: false

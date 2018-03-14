@@ -1,4 +1,4 @@
-package com.revature.security.impl;
+package com.revature.hydra.security.impl;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,28 +17,39 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public abstract class AbstractSalesforceSecurityHelper {
-	@Value("#{systemEnvironment['SALESFORCE_LOGIN_URL']}")
-	protected String loginURL;
+	// @Value("#{systemEnvironment['SALESFORCE_LOGIN_URL']}")
+	// This needs to be the url of salesforce service
+	protected String loginURL = "";
+	// Using @Value annotation for this is very useless
 	@Value("services/oauth2/authorize")
 	protected String authURL;
+	// Using @Value annotation for this is very useless
 	@Value("services/oauth2/token")
 	protected String accessTokenURL;
-	@Value("#{systemEnvironment['SALESFORCE_CLIENT_ID']}")
-	protected String clientId;
-	@Value("#{systemEnvironment['SALESFORCE_CLIENT_SECRET']}")
+	// @Value("#{systemEnvironment['SALESFORCE_CLIENT_ID']}")
+	// this needs to be the clientId of machine requesting
+	protected String clientId = "";
+	// @Value("#{systemEnvironment['SALESFORCE_CLIENT_SECRET']}")
+	// This needs to be the client password. Should not be implemented this way imo.
 	protected String clientSecret;
-	@Value("#{systemEnvironment['SALESFORCE_REDIRECT_URI']}")
-	protected String redirectUri;
-	@Value("#{systemEnvironment['CALIBER_PROJECT_URL']}")
-	protected String redirectUrl;
+	// This needs to be the url to redirect from salesforce
+	// @Value("#{systemEnvironment['SALESFORCE_REDIRECT_URI']}")
+	protected String redirectUri = "";
+	// @Value("#{systemEnvironment['CALIBER_PROJECT_URL']}")
+	// This needs to be caliber url.
+	protected String redirectUrl = "";
+	// Using @Value annotation for this is very useless
 	@Value("services/oauth2/revoke")
 	protected String revokeUrl;
-	@Value("#{systemEnvironment['CALIBER_SERVER_URL']}")
-	protected String baseUrl;
-	@Value("#{systemEnvironment['CALIBER_API_USERNAME']}")
-	protected String username;
-	@Value("#{systemEnvironment['CALIBER_API_PASSWORD']}")
-	protected String password;
+	// @Value("#{systemEnvironment['CALIBER_SERVER_URL']}")
+	// This should Caliber direct endpoint to get the token.
+	protected String baseUrl = "";
+	// @Value("#{systemEnvironment['CALIBER_API_USERNAME']}")
+	// This should be in a config file in a gitlab repo or pcf uaa.
+	protected String username = "";
+	// @Value("#{systemEnvironment['CALIBER_API_PASSWORD']}")
+	// This should be in a config file in a gitlab repo or pcf uaa.
+	protected String password = "";
 	
     private BufferedReader bufferedReader;
     private StringBuilder stringBuilder;
@@ -56,7 +67,9 @@ public abstract class AbstractSalesforceSecurityHelper {
         	log.error("Unable to read input String: " + e + " " + e.getClass() + " " + e.getMessage());	
             return null;
         }
-        closeStream();
+        finally {
+			closeStream();
+        }
         return stringBuilder.toString();
     }
 
@@ -68,7 +81,8 @@ public abstract class AbstractSalesforceSecurityHelper {
         }
     }
 
-	public String getLoginURL() {
+	// EnvVariable
+    public String getLoginURL() {
 		return loginURL;
 	}
 
@@ -76,6 +90,7 @@ public abstract class AbstractSalesforceSecurityHelper {
 		this.loginURL = loginURL;
 	}
 
+	// This is service/oauth2/authorize
 	public String getAuthURL() {
 		return authURL;
 	}
@@ -84,6 +99,7 @@ public abstract class AbstractSalesforceSecurityHelper {
 		this.authURL = authURL;
 	}
 
+	// This is service/oauth2/token
 	public String getAccessTokenURL() {
 		return accessTokenURL;
 	}
@@ -92,6 +108,7 @@ public abstract class AbstractSalesforceSecurityHelper {
 		this.accessTokenURL = accessTokenURL;
 	}
 
+	// EnvVariable
 	public String getClientId() {
 		return clientId;
 	}
@@ -100,6 +117,7 @@ public abstract class AbstractSalesforceSecurityHelper {
 		this.clientId = clientId;
 	}
 
+	// EnvVariable
 	public String getClientSecret() {
 		return clientSecret;
 	}
@@ -108,6 +126,7 @@ public abstract class AbstractSalesforceSecurityHelper {
 		this.clientSecret = clientSecret;
 	}
 
+	// EnvVariable
 	public String getRedirectUri() {
 		return redirectUri;
 	}
@@ -116,6 +135,7 @@ public abstract class AbstractSalesforceSecurityHelper {
 		this.redirectUri = redirectUri;
 	}
 
+	// EnvVariable
 	public String getRedirectUrl() {
 		return redirectUrl;
 	}
@@ -123,7 +143,8 @@ public abstract class AbstractSalesforceSecurityHelper {
 	public void setRedirectUrl(String redirectUrl) {
 		this.redirectUrl = redirectUrl;
 	}
-
+	
+	// services/oauth2/revoke
 	public String getRevokeUrl() {
 		return revokeUrl;
 	}
@@ -155,6 +176,5 @@ public abstract class AbstractSalesforceSecurityHelper {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-    
     
 }
